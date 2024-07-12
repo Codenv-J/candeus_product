@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- 定义日志文件存放的路径和文件名 -->
+    <property name="LOG_PATH" value="logs"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/application.log"/>
+    <property name="LOG_ARCHIVE" value="${LOG_PATH}/archive"/>
+
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <encoder>
+            <pattern>[%-5level] [%date{yyyy-MM-dd HH:mm:ss}] [%X{requestId}] %logger{96} [%line] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${LOG_ARCHIVE}/application-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 保留历史日志的最大数量 -->
+            <maxHistory>30</maxHistory>
+            <!-- 文件大小上限，超过该值则会新建文件 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 定义logger的级别和输出位置 -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="com.sziit.boot.controller" level="DEBUG"/>
+    <logger name="com.sziit.boot.service" level="ERROR"/>
+    <logger name="com.sziit.boot.mapper" level="ERROR"/>
+    <logger name="com.sziit.boot.common.log" level="DEBUG"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="io.lettuce.core" level="INFO"/>
+    <logger name="org.mybatis.spring" level="INFO"/>
+    <logger name="org.jboss.logging" level="INFO"/>
+    <logger name="io.netty" level="INFO"/>
+    <logger name="reactor.util" level="INFO"/>
+
+
+    <!-- root logger -->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

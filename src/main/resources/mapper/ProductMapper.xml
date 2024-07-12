@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.candeus.product.mapper.ProductMapper">
+
+    <select id="selectByProductSerial" resultType="com.candeus.product.domain.pojo.Product"
+            parameterType="java.lang.String">
+        select id, product_type, product_serial, production_cycle, is_deleted, created_at, brand, product_model, updated_at from product where product_serial = #{productSerial} and is_deleted != 1
+    </select>
+</mapper>
