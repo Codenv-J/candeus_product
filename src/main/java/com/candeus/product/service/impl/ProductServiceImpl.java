@@ -157,7 +157,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Page<Product> page = new Page<>(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_deleted", false);
-        queryWrapper.orderByDesc("updated_at");
+        queryWrapper.orderByAsc("id");
         Page<Product> productPage = productMapper.selectPage(page, queryWrapper);
         return Result.ok(productPage);
     }
@@ -201,6 +201,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>();
         productQueryWrapper.select(fieldNameList.toArray(new String[0]));  // 只查询需要的字段
         productQueryWrapper.eq("is_deleted", false);
+        productQueryWrapper.orderByAsc("id");
         if (productSerial != null || !productSerial.equals("")){
             productQueryWrapper.eq("product_serial", productSerial);
         }
