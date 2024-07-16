@@ -30,7 +30,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/admin/**"
                 )
                 .excludePathPatterns(
-                        "/admin/login"
+                        "/admin/login",
+                        "/admin/fieldDisplayConfig/all",
+                        "/admin/customTextConfig/all"
                 )
                 .order(1);
         registry.addInterceptor(new RefreshAdminTokenInterceptor(stringRedisTemplate))
