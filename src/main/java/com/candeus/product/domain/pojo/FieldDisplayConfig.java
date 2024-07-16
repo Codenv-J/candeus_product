@@ -32,6 +32,9 @@ public class FieldDisplayConfig implements Serializable {
     @TableField("field_name")
     private String fieldName;
 
+    @TableField("field_text_name")
+    private String fieldTextName;
+
     @TableField("is_display")
     private Boolean isDisplay;
 
