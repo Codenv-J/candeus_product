@@ -37,4 +37,6 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### Resources隐藏文件 ###
+### 隐藏日志文件 ###
+logs
+*.log
