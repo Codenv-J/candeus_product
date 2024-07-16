@@ -6,4 +6,8 @@
             parameterType="java.lang.String">
         select id, product_type, product_serial, production_cycle, is_deleted, created_at, brand, product_model, updated_at from product where product_serial = #{productSerial} and is_deleted != 1
     </select>
+    <select id="findByTypeAndSerial" resultType="com.candeus.product.domain.pojo.Product"
+            parameterType="java.lang.String">
+        select id, product_type, product_serial, production_cycle, is_deleted, created_at, brand, product_model, updated_at from product where product_type = #{productType} OR product_serial = #{productSerial} and is_deleted != 1
+    </select>
 </mapper>

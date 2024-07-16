@@ -232,6 +232,17 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return Result.ok(result);
     }
 
+    @Override
+    public Result findByTypeAndSerial(String productType,String productSerial) {
+        //查询产品序列号产品是否已经存在
+        Product byOrderNo2 = productMapper.findByTypeAndSerial(productType, productSerial);
+        if (byOrderNo2 != null){
+            return Result.ok(byOrderNo2);
+        }else{
+            return Result.fail("该产品不存在！");
+        }
+    }
+
     private static String toCamelCase(String fieldName) {
         StringBuilder result = new StringBuilder();
         boolean capitalizeNext = false;

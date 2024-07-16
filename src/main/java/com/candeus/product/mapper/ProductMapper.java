@@ -16,4 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ProductMapper extends BaseMapper<Product> {
 
     Product selectByProductSerial(String productSerial);
+
+    Product findByTypeAndSerial(String productType, String productSerial);
 }

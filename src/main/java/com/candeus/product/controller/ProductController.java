@@ -32,6 +32,11 @@ public class ProductController {
         return productService.add(productForm);
     }
 
+    @PostMapping("/admin/product/getByidTypeNum")
+    Result getProductByTypeAndSerial(String productType,String productSerial){
+        return productService.findByTypeAndSerial(productType,productSerial);
+    }
+
     @PostMapping("/admin/product/import")
     Result importProduct(MultipartFile file) {
         return productService.importProducts(file);
