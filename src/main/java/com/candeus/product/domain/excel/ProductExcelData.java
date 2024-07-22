@@ -26,7 +26,7 @@ public class ProductExcelData {
     @ColumnWidth(10)
     private String productionCycle;
 
-//    @ExcelProperty("代理商")
-//    @ColumnWidth(10)
-//    private String proxyFactory;
+    @ExcelProperty("代理商")
+    @ColumnWidth(10)
+    private String proxyFactory;
 }
