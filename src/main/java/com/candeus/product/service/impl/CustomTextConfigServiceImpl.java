@@ -4,14 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.candeus.product.common.result.Result;
 import com.candeus.product.domain.pojo.CustomTextConfig;
 import com.candeus.product.domain.req.CustomTextConfigForm;
+import com.candeus.product.domain.vo.AdminVo;
 import com.candeus.product.mapper.CustomTextConfigMapper;
 import com.candeus.product.service.CustomTextConfigService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.candeus.product.tool.AdminHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.candeus.product.common.constant.AdminLevelConstant.SUPER_ADMIN;
 
 /**
  * <p>
@@ -43,6 +47,11 @@ public class CustomTextConfigServiceImpl extends ServiceImpl<CustomTextConfigMap
     @Override
     @Transactional
     public Result updateCustomTextConfig(String id, CustomTextConfigForm configForm) {
+        AdminVo admin = AdminHolder.getAdmin();
+        Integer adminLevel = admin.getAdminLevel();
+        if (adminLevel != SUPER_ADMIN.getLevel()) {
+            return Result.build(40010,"权限不足,请联系超级管理员!",null);
+        }
         CustomTextConfig customTextConfig = customTextConfigMapper.selectById(id);
         if (customTextConfig != null) {
             customTextConfig.setCustomText(configForm.getCustomText());
