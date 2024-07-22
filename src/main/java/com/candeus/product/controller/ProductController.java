@@ -58,8 +58,8 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product/all")
-    Result getProductList(@RequestParam(value = "pageNum",defaultValue = "1") String pageNum, @RequestParam(value = "pageSize",defaultValue = "10") String pageSize) {
-        return productService.getProductList(pageNum,pageSize);
+    Result getProductList(@RequestParam(value = "pageNum",defaultValue = "1") String pageNum, @RequestParam(value = "pageSize",defaultValue = "50") String pageSize,@RequestParam(value = "productSerial",required = false) String productSerial) {
+        return productService.getProductList(pageNum,pageSize,productSerial);
     }
 
     @GetMapping("/user/product/all")

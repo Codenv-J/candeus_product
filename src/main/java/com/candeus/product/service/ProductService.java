@@ -26,7 +26,7 @@ public interface ProductService extends IService<Product> {
 
     Result getProduct(String id);
 
-    Result getProductList(String pageNum, String pageSize);
+    Result getProductList(String pageNum, String pageSize, String productSerial);
 
     Result getSearchProductList(String pageNum, String pageSize, String productSerial);
 

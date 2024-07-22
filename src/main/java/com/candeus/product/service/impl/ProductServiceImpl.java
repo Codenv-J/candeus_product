@@ -1,7 +1,6 @@
 package com.candeus.product.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.listener.PageReadListener;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -12,11 +11,13 @@ import com.candeus.product.domain.pojo.CustomTextConfig;
 import com.candeus.product.domain.pojo.FieldDisplayConfig;
 import com.candeus.product.domain.pojo.Product;
 import com.candeus.product.domain.req.ProductForm;
+import com.candeus.product.domain.vo.AdminVo;
 import com.candeus.product.mapper.ProductMapper;
 import com.candeus.product.service.CustomTextConfigService;
 import com.candeus.product.service.FieldDisplayConfigService;
 import com.candeus.product.service.ProductService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.candeus.product.tool.AdminHolder;
 import com.candeus.product.tool.SpringBeanUtil;
 import com.candeus.product.tool.TimestampUtil;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.candeus.product.common.constant.AdminLevelConstant.SUPER_ADMIN;
 
 /**
  * <p>
@@ -114,6 +114,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     @Transactional
     public Result updateProduct(String id, ProductForm productForm) {
+        AdminVo admin = AdminHolder.getAdmin();
+        Integer adminLevel = admin.getAdminLevel();
+        if (adminLevel != SUPER_ADMIN.getLevel()) {
+            return Result.build(40010,"权限不足,请联系超级管理员!",null);
+        }
         Product productInDB = productMapper.selectById(id);
         if (productInDB != null){
             productInDB.setBrand(productForm.getBrand());
@@ -132,6 +137,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     @Transactional
     public Result deleteProduct(String id) {
+        AdminVo admin = AdminHolder.getAdmin();
+        Integer adminLevel = admin.getAdminLevel();
+        if (adminLevel != SUPER_ADMIN.getLevel()) {
+            return Result.build(40010,"权限不足,请联系超级管理员!",null);
+        }
         Product productInDB = productMapper.selectById(id);
         if (productInDB != null){
             productInDB.setIsDeleted(true);
@@ -153,10 +163,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
-    public Result getProductList(String pageNum, String pageSize) {
+    public Result getProductList(String pageNum, String pageSize, String productSerial) {
         Page<Product> page = new Page<>(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_deleted", false);
+        if (!productSerial.isEmpty()){
+            queryWrapper.like("product_serial", productSerial);
+        }
         queryWrapper.orderByAsc("id");
         Page<Product> productPage = productMapper.selectPage(page, queryWrapper);
         return Result.ok(productPage);
