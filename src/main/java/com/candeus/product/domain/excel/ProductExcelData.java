@@ -25,4 +25,8 @@ public class ProductExcelData {
     @ExcelProperty("出厂周期")
     @ColumnWidth(10)
     private String productionCycle;
+
+//    @ExcelProperty("代理商")
+//    @ColumnWidth(10)
+//    private String proxyFactory;
 }
