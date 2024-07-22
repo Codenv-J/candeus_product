@@ -19,6 +19,7 @@ public class Product {
     private String productModel;
     private String productSerial;
     private String productionCycle;
+    private String proxyFactory;
     private Boolean isDeleted;
     private String createdAt;
     private String updatedAt;

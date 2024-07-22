@@ -13,4 +13,5 @@ public class ProductForm {
     private String productModel;
     private String productSerial;
     private String productionCycle;
+    private String proxyFactory;
 }
