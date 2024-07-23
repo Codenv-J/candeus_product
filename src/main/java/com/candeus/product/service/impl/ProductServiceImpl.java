@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.candeus.product.tool.AdminHolder;
 import com.candeus.product.tool.SpringBeanUtil;
 import com.candeus.product.tool.TimestampUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,6 +127,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             productInDB.setProductModel(productForm.getProductModel());
             productInDB.setProductSerial(productForm.getProductSerial());
             productInDB.setProductionCycle(productForm.getProductionCycle());
+            productInDB.setProxyFactory(productForm.getProxyFactory());
             productInDB.setUpdatedAt(TimestampUtil.getCurrentTimestamp().toString());
             productMapper.updateById(productInDB);
             return Result.ok();
@@ -167,13 +169,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Page<Product> page = new Page<>(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_deleted", false);
-        //TODO 如果存在产品序列号产品，则根据产品序列号进行模糊查询，先进行参数校验
-        if (productSerial != null && !productSerial.isEmpty()){
+        if (productSerial != null){
             queryWrapper.like("product_serial", productSerial);
         }
-//        if (productSerial){
-//            queryWrapper.like("product_serial", productSerial);
-//        }
         queryWrapper.orderByAsc("id");
         Page<Product> productPage = productMapper.selectPage(page, queryWrapper);
         return Result.ok(productPage);
@@ -181,6 +179,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public Result getSearchProductList(String pageNum, String pageSize, String productSerial) {
+        //校验参数
+        if (StringUtils.isEmpty(productSerial)) {
+            return Result.fail("产品序列号不能为空！");
+        }
         // 封装返回结果
         HashMap<String, Object> result = new HashMap<>();
         // 分页
