@@ -167,9 +167,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Page<Product> page = new Page<>(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_deleted", false);
-        if (!productSerial.isEmpty()){
+        //TODO 如果存在产品序列号产品，则根据产品序列号进行模糊查询，先进行参数校验
+        if (productSerial != null && !productSerial.isEmpty()){
             queryWrapper.like("product_serial", productSerial);
         }
+//        if (productSerial){
+//            queryWrapper.like("product_serial", productSerial);
+//        }
         queryWrapper.orderByAsc("id");
         Page<Product> productPage = productMapper.selectPage(page, queryWrapper);
         return Result.ok(productPage);
