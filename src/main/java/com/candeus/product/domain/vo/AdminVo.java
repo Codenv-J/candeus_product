@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminVo {
     private String adminId;
+    private String name;
     private String avatar;
     private String emergencyContact;
     private Integer adminLevel;
