@@ -159,6 +159,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Page<Admin> page = new Page<>(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("is_deleted",0);
+        queryWrapper.orderByAsc("create_time");
         Page<Admin> adminPage = baseMapper.selectPage(page, queryWrapper);
         //是否对密码进行脱敏
         if (adminPage != null){
